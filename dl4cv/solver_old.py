@@ -9,7 +9,7 @@ import torch.nn.functional as F
 
 
 class Solver(object):
-    default_adam_args = {"lr": 1e-4,
+    default_adam_args = {"lr": 0.0,
                          "betas": (0.9, 0.999),
                          "eps": 1e-8,
                          "weight_decay": 0.0}
@@ -46,8 +46,7 @@ class Solver(object):
         """
         
         self._reset_histories()
-        #iter_per_epoch = len(train_loader)  This was here from the beginning. I think it didn't have any importance
-
+        
         if torch.cuda.is_available():
             model.cuda()
         
@@ -56,8 +55,8 @@ class Solver(object):
      
         ########################################################################
         
-        x = train_data # 1st element contains the data. 3x32x32  (Torch Tensor)
-        y = train_labels  # 2nd element contains labels  (Simple Variable)
+        x = train_data # 
+        y = train_labels  # 
         
         x_val = val_data  # Torch tensor
         y_val = val_labels # simple variable
@@ -77,7 +76,7 @@ class Solver(object):
             
             x_batch = x[indx]   
             y_batch = y[indx]
-            y_batch = y_batch.view(-1, self.num_flat_features(y_batch)) 
+            #y_batch = y_batch.view(-1, self.num_flat_features(y_batch)) 
           
             #y_batch.type(torch.FloatTensor)  This was required for MSE() loss function
        

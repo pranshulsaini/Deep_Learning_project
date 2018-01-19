@@ -16,12 +16,13 @@ class ClassificationCNN(nn.Module):
         super(ClassificationCNN, self).__init__()
         # 1 input image channel, 6 output channels, 5x5 square convolution
         # conv kernel
-        self.conv1 = nn.Conv2d(5, 6, (1,2))
+        self.conv1 = nn.Conv2d(6, 6, (1,2))
         self.conv2 = nn.Conv2d(6, 4, (1,3))
+        self.conv3 = nn.Conv2d(4, 4, (1,3))
         #self.conv1.weight.data = self.conv1.weight.data * 2 # printing the automatically initialised weights
         
         # an affine operation: y = Wx + b
-        self.fc1 = nn.Linear(28, 20)
+        self.fc1 = nn.Linear(20, 30)
         
 
     def forward(self, x):
@@ -39,6 +40,8 @@ class ClassificationCNN(nn.Module):
         
         x = x.view(-1, self.num_flat_features(x)) # the shape of x changes from [1,16,5,5] to [1,400]
         x = F.relu(self.fc1(x))   # this step is multiplying the weight matrix defined in self.fc1 with x of shape[1,400]
+        x = x.resize(x.data.shape[0],3,1,10)
+        
         return x
 
     def num_flat_features(self, x):
